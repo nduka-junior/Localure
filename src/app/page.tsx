@@ -2,12 +2,10 @@
 import BusinessForm from "@/components/BusinessForm";
 import { useAuth } from "@/components/context/AuthContext";
 import React from "react";
-import { useBs } from "@/components/context/BusinessContext";
+import { useBs, bsContextType } from "@/components/context/BusinessContext";
 
 export default function Page() {
-  const { isBusiness }: { isBusiness: boolean } = useBs() ?? {
-    isBusiness: false,
-  };
+  const { isBusiness } = useBs()  as bsContextType
 
   console.log(isBusiness);
   return (

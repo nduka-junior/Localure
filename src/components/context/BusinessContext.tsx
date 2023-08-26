@@ -56,7 +56,7 @@ function BusinessContext({ children }: { children?: React.ReactNode }) {
   };
   useEffect(() => {
     checkBusinessInfo();
-  }, [user, isBusiness]);
+  }, [ ]);
   const value: bsContextType = {
     name: "hellos",
     isBusiness,
