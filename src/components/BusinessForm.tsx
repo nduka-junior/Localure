@@ -23,7 +23,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { collection, addDoc } from "firebase/firestore";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/components/context/AuthContext";
+import { useAuth, authContextType } from "@/components/context/AuthContext";
 import { db } from "@/lib/firebase";
 import { useToast } from "@/components/ui/use-toast";
 import { useBs } from "./context/BusinessContext";
@@ -61,7 +61,7 @@ const formSchema = z.object({
   }),
 });
 const BusinessForm = () => {
-  const { user, loading, error } = useAuth();
+  const { user, loading, error } = useAuth() as authContextType;
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
   const { toast } = useToast();

@@ -1,5 +1,9 @@
 import React from "react";
-import { useProfileContext, ProductType } from "./context/ProfileContext";
+import {
+  useProfileContext,
+  ProductType,
+  ProfileContextType,
+} from "./context/ProfileContext";
 import Image from "next/image";
 import {
   Dialog,
@@ -12,13 +16,13 @@ import {
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
 function ProductList() {
-  const { productList } = useProfileContext();
+  const { productList } = useProfileContext() as ProfileContextType;
   console.log(productList);
   return (
     <div className="grid  grid-cols-3 xl:grid-cols-4  max-sm:grid-cols-2 mt-4 container  gap-3">
-      {productList?.map((product: ProductType, index: string) => {
+      {productList?.map((product: ProductType, index: number) => {
         return (
-          <Dialog>
+          <Dialog key={index}>
             <DialogTrigger>
               <div
                 className="relative cursor-pointer w-full h-full  "
@@ -93,44 +97,3 @@ function ProductList() {
 }
 
 export default ProductList;
-
-// import React from "react";
-// import { useProfileContext, ProductType } from "./context/ProfileContext";
-// import Image from "next/image";
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogDescription,
-//   DialogHeader,
-//   DialogTitle,
-//   DialogTrigger,
-// } from "@/components/ui/dialog";
-// function ProductList() {
-//   const { productList } = useProfileContext();
-//   console.log(productList);
-//   return (
-//     <>
-//       <div className="grid  grid-cols-3 xl:grid-cols-4  max-sm:grid-cols-2 mt-4 container   gap-3">
-//         {productList?.map((product: ProductType,index:string) => {
-//           return (
-
-//                   <div className="relative cursor-pointer w-full " key={product.id}>
-//                     <Image
-//                       src={product.url[0]}
-//                       alt={product.name}
-//                       width={200}
-//                       height={200}
-//                       className="h-full w-full object-cover max-h-[200px] hover:bg-[black]  transition duration-200 ease-in-out relative z-10 "
-//                     />
-//                     <div className="absolute h-full w-full z-20  hover:bg-[#0000003f]  transition duration-200 ease-out top-0 "></div>
-//                   </div>
-
-//           );
-//         })}
-
-//       </div>
-//     </>
-//   );
-// }
-
-// export default ProductList;

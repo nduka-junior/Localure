@@ -4,17 +4,16 @@ import { useAuth } from "@/components/context/AuthContext";
 import React from "react";
 import { useBs } from "@/components/context/BusinessContext";
 
-export default function Home() {
-  const { name }: { name: string } = useAuth();
-  const { isBusiness }: { isBusiness: boolean } = useBs();
+export default function Page() {
+  const { isBusiness }: { isBusiness: boolean } = useBs() ?? {
+    isBusiness: false,
+  };
 
   console.log(isBusiness);
   return (
     <div className="mt-7">
       <div className="container">
-        {
-          isBusiness ?  <BusinessForm /> : <h1>hello</h1>
-       }
+        {isBusiness && <BusinessForm /> }
       </div>
     </div>
   );

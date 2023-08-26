@@ -1,12 +1,12 @@
 import React from "react";
-import { useAuth } from "./context/AuthContext";
+import { authContextType, useAuth } from "./context/AuthContext";
 import { useProfileContext } from "./context/ProfileContext";
 import Image from "next/image";
-import { useBs } from "./context/BusinessContext";
+import { useBs, bsContextType } from "./context/BusinessContext";
 function ProfileAvatar() {
-  const { name } = useProfileContext();
-  const { user,loading } = useAuth();
-  const { businessInfo } = useBs();
+
+  const { user, loading } = useAuth() as authContextType;
+  const { businessInfo } = useBs() as bsContextType;
     console.log(businessInfo);
     if (loading && businessInfo)  return <h1>loading</h1>;
   return businessInfo && (

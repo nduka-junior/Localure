@@ -24,13 +24,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { useAuth } from "./context/AuthContext";
+import { useAuth, authContextType } from "./context/AuthContext";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Progress } from "@/components/ui/progress";
 import { storage } from "@/lib/firebase";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import ProductModalSkeleton from "./ProductModalSkeleton";
+
+
+
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -52,7 +55,7 @@ function ProductModal() {
   const [noFiles, setNoFiles] = useState(0);
   const [uploading, setUploading] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const { user, loading } = useAuth();
+  const { user, loading } = useAuth() as authContextType  ;
   const { toast } = useToast();
   const router = useRouter();
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -130,7 +133,6 @@ function ProductModal() {
         form.reset();
         setFiles(null);
         setInputValue("");
-        
 
         toast({
           description: "Product added successfully",
@@ -138,8 +140,7 @@ function ProductModal() {
         });
         console.log("Document written with ID: ", docRef.id);
         setUploading(false);
-        window.location.reload();
-
+        // window.location.reload();
       } catch (e) {
         console.error("Error adding document: ", e);
       }
@@ -152,6 +153,9 @@ function ProductModal() {
       });
     }
   }
+  if (loading) {
+    return <div>Loading... pmodal</div>;
+  }
 
   return (
     <Dialog>
@@ -159,7 +163,6 @@ function ProductModal() {
         <Button variant="outline">Add Product</Button>
       </DialogTrigger>
       <div className="overflow-y-auto h-auto">
-    
         <DialogContent className="!overflow-y-auto h-auto ">
           <DialogHeader>
             <DialogTitle className="text-center text-2xl">

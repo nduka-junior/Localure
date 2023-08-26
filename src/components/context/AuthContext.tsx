@@ -4,10 +4,11 @@ import { auth } from "@/lib/firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useAuthState, AuthStateHook } from "react-firebase-hooks/auth";
 import { useToast } from "@/components/ui/use-toast";
+import {User} from "firebase/auth";
 
-interface authContextType {
-  name: string | null;
-  user: unknown;
+
+export interface authContextType {
+  user: User | null | undefined;
   loading: boolean;
   error: unknown;
   signInWithGoogle: () => void;
@@ -15,7 +16,7 @@ interface authContextType {
 }
 
 export const createAuthContext = createContext<authContextType | null>({
-  name: null,
+
   user: null,
   loading: false,
   error: null,
@@ -76,7 +77,7 @@ function AuthContext({ children }: { children: ReactNode }) {
   };
 
   const value: authContextType = {
-    name: "John junior",
+
     user,
     loading,
     error,
@@ -92,5 +93,4 @@ function AuthContext({ children }: { children: ReactNode }) {
 
 export default AuthContext;
 
-export const useAuth = () =>
-  useContext<authContextType | null  >(createAuthContext);
+export const useAuth = () => useContext<authContextType | null>(createAuthContext);

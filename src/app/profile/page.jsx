@@ -4,7 +4,7 @@ import React from "react";
 import ProductModal from "@/components/ProductModal";
 import ProfileAvatar from "@/components/ProfileAvatar";
 import ProductList from "@/components/ProductList";
-function page() {
+function Page() {
 
   return (
     <div className="container">
@@ -18,4 +18,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

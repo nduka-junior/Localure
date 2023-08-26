@@ -9,11 +9,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "./context/AuthContext";
+import { useAuth, authContextType } from "./context/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+
 function AuthModal() {
-  const { signInWithGoogle, user, logoutFromGoogle, loading } = useAuth();
+  const { signInWithGoogle, user, logoutFromGoogle, loading } =
+    useAuth() as authContextType;
   console.log(user?.photoURL);
   if (loading) return <div>Loading...</div>;
   return (
@@ -21,9 +23,9 @@ function AuthModal() {
       {user ? (
         <div className="flex items-center gap-3">
           <Avatar>
-            <AvatarImage src={user?.photoURL} />
+            <AvatarImage src={ user?.photoURL ?? undefined } />
             <AvatarFallback>
-              {user.displayName.slice(0, 2).toUpperCase()}
+              {user?.displayName?.slice(0, 2).toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <Button onClick={() => logoutFromGoogle()}>Logout</Button>

@@ -3,12 +3,7 @@ import { createContext, useContext, useEffect } from "react";
 import React from "react";
 import { getDocs, collection,query,orderBy } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { useAuth } from "@/components/context/AuthContext";
-
-interface ProfileContextType {
-
-  productList: ProductType[] | null;
-}
+import { useAuth, authContextType } from "@/components/context/AuthContext";
 export interface ProductType {
   name: string;
   price: string;
@@ -16,19 +11,24 @@ export interface ProductType {
   id: string;
   description?: string;
 }
+export interface ProfileContextType {
+
+  productList: ProductType[] | null;
+}
+
 const createProfileContext = createContext<ProfileContextType | null>({
     productList: null,
   
 });
 
 function ProfileContext({ children }: { children?: React.ReactNode }) {
-  const { user } = useAuth();
+  const { user } = useAuth() as authContextType;
   const [productList, setProductList] = React.useState<ProductType[] | null>(
     null
   );
 
   const getProductList = async () => {
-    const productref = collection(db, user?.uid);
+    const productref = collection(db, user?.uid!);
       const q = query(productref, orderBy("date", "desc"));
     // Retrieve documents using the get() method
     const querySnapshot = await getDocs(q);

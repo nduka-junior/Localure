@@ -2,12 +2,11 @@
 import React, { useEffect } from "react";
 import { createContext, useContext } from "react";
 import { db } from "@/lib/firebase";
-import { useAuth } from "@/components/context/AuthContext";
+import { useAuth, authContextType } from "@/components/context/AuthContext";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { useRouter } from "next/navigation";
-import { AuthStateHook } from "react-firebase-hooks/auth";
 
-interface bsContextType {
+export interface bsContextType {
   name: string | null;
   isBusiness: boolean;
   businessInfo: BusinessInfoType | null;
@@ -29,8 +28,8 @@ export const createBsContext = createContext<bsContextType | null>({
 function BusinessContext({ children }: { children?: React.ReactNode }) {
   const [isBusiness, setIsBusiness] = React.useState<boolean>(false);
   const [businessInfo, setBusinessInfo] =
-    React.useState<BusinessInfoType | null >(null);
-  const { user } = useAuth() 
+    React.useState<BusinessInfoType | null>(null);
+  const { user } = useAuth() as authContextType;
   const router = useRouter();
   console.log(user);
   const checkBusinessInfo = async () => {
@@ -61,7 +60,7 @@ function BusinessContext({ children }: { children?: React.ReactNode }) {
   const value: bsContextType = {
     name: "hellos",
     isBusiness,
-    businessInfo
+    businessInfo,
   };
   return (
     <createBsContext.Provider value={value}>
