@@ -1,6 +1,6 @@
 
 ---
-## docs generated using chatgpt
+## Docs generated using chatgpt
 # Welcome to Localure Documentation
 
 Localure is an innovative platform that offers a seamless and engaging dining experience. Our platform allows users to explore restaurant menus, make informed dining choices, and enjoy contactless interactions. Whether you're a restaurant owner or a customer, Localure has something special to offer.
