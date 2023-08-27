@@ -51,7 +51,7 @@ function ProductList() {
                     alt={product.name}
                     width={200}
                     height={200}
-                    className="h-full w-full object-cover  max-h-[250px] hover:bg-[black]  transition duration-200 ease-in-out relative z-10 "
+                    className="h-[250px] w-full object-cover object-center   max-h-[250px] hover:bg-[black]  transition duration-200 ease-in-out relative z-10 "
                   />
                   <div className="absolute h-full w-full z-20  hover:bg-[#0000003f]  transition duration-200 ease-out top-0 "></div>
                 </div>

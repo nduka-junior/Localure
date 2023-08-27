@@ -30,9 +30,6 @@ import { Progress } from "@/components/ui/progress";
 import { storage } from "@/lib/firebase";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-import ProductModalSkeleton from "./ProductModalSkeleton";
-
-
 
 
 const formSchema = z.object({
