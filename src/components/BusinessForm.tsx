@@ -269,7 +269,7 @@ const BusinessForm = () => {
     value: category,
     label: category,
   }));
-  console.log(categories);
+
 
   return (
     <div className="container md:max-w-[60vw]">

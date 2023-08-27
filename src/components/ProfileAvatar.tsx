@@ -3,12 +3,16 @@ import { authContextType, useAuth } from "./context/AuthContext";
 import { useProfileContext } from "./context/ProfileContext";
 import Image from "next/image";
 import { useBs, bsContextType } from "./context/BusinessContext";
+import ProfileAvatarSkeleton from "@/components/ProfileAvatarSkeleton";
 function ProfileAvatar() {
-
   const { user, loading } = useAuth() as authContextType;
   const { businessInfo } = useBs() as bsContextType;
-    console.log(businessInfo);
-    if (loading && businessInfo)  return <h1>loading</h1>;
+  console.log(user);
+
+  //
+  if (loading || (businessInfo == null ) ) return <ProfileAvatarSkeleton />;
+  //
+
   return businessInfo && (
     <div
       className="flex 

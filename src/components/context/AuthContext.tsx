@@ -4,7 +4,9 @@ import { auth } from "@/lib/firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useAuthState, AuthStateHook } from "react-firebase-hooks/auth";
 import { useToast } from "@/components/ui/use-toast";
-import {User} from "firebase/auth";
+import { User } from "firebase/auth";
+import { useRouter } from "next/navigation";
+
 
 
 export interface authContextType {
@@ -27,6 +29,7 @@ export const createAuthContext = createContext<authContextType | null>({
 function AuthContext({ children }: { children: ReactNode }) {
   const [user, loading, error]: AuthStateHook = useAuthState(auth);
   const { toast } = useToast();
+  const router = useRouter();
   // PROVIDER
   const googleProvider = new GoogleAuthProvider();
   // SIGN IN WITH GOOGLE
@@ -66,6 +69,7 @@ function AuthContext({ children }: { children: ReactNode }) {
         toast({
           description: "Logout Successful",
         });
+        // router.refresh()
       })
       .catch((error) => {
         toast({
@@ -84,6 +88,7 @@ function AuthContext({ children }: { children: ReactNode }) {
     signInWithGoogle,
     logoutFromGoogle,
   };
+
   return (
     <createAuthContext.Provider value={value}>
       {children}

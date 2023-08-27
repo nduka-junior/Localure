@@ -162,17 +162,17 @@ function ProductModal() {
       <DialogTrigger>
         <Button variant="outline">Add Product</Button>
       </DialogTrigger>
-      <div className="overflow-y-auto h-auto">
-        <DialogContent className="!overflow-y-auto h-auto ">
+
+        <DialogContent className="h-[90vh] overflow-y-scroll max-sm:w-[90vw] ">
           <DialogHeader>
-            <DialogTitle className="text-center text-2xl">
+            <DialogTitle className="text-center text-2xl  ">
               Product Details
             </DialogTitle>
             <DialogDescription>
               <Form {...form}>
                 <form
                   onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-8"
+                  className="space-y-8 mt-2 max-sm:text-left   "
                 >
                   <FormField
                     control={form.control}
@@ -248,10 +248,10 @@ function ProductModal() {
                   />
                   <FormItem>
                     <FormLabel>Select Images</FormLabel>
-                    <FormControl className="m-3 file:cursor-pointer ">
+                    <FormControl className=" file:cursor-pointer ">
                       <Input
                         type="file"
-                        className="file:border-2 file:rounded-lg py-2 h-auto file:px-2 "
+                        className="file:border-2 file:rounded-lg py-2 h-auto file:px-2  w-full"
                         multiple
                         onChange={handleChange}
                         value={inputValue}
@@ -288,7 +288,7 @@ function ProductModal() {
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
-      </div>
+   
     </Dialog>
   );
 }

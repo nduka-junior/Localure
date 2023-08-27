@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useAuth, authContextType } from "./context/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
+import Link from "next/link";
 
 function AuthModal() {
   const { signInWithGoogle, user, logoutFromGoogle, loading } =
@@ -21,9 +21,13 @@ function AuthModal() {
   return (
     <>
       {user ? (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
+          <Button variant="link">
+            <Link href="/profile" className="text-lg">Profile</Link>
+          </Button>
+
           <Avatar>
-            <AvatarImage src={ user?.photoURL ?? undefined } />
+            <AvatarImage src={user?.photoURL ?? undefined} />
             <AvatarFallback>
               {user?.displayName?.slice(0, 2).toUpperCase()}
             </AvatarFallback>

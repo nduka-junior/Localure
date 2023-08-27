@@ -32,11 +32,12 @@ function BusinessContext({ children }: { children?: React.ReactNode }) {
   const { user } = useAuth() as authContextType;
   const router = useRouter();
   console.log(user);
+
+  //
   const checkBusinessInfo = async () => {
     if (user) {
       const businessRef = collection(db, "businessDetails");
       const q = query(businessRef, where("uid", "==", user?.uid));
-      console.log("working");
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         const data: BusinessInfoType = doc.data() as BusinessInfoType;
@@ -47,21 +48,32 @@ function BusinessContext({ children }: { children?: React.ReactNode }) {
         console.log("Document data:", data);
       });
       if (querySnapshot.docs.length == 0) {
-        return setIsBusiness(true);
+        return setIsBusiness(false );
       } else {
-        setIsBusiness(false);
+        setIsBusiness(true);
         return router.push("/profile");
       }
     }
+    else {
+        setIsBusiness(true);
+
+      setBusinessInfo(null);
+    }
   };
+  //
+
   useEffect(() => {
     checkBusinessInfo();
-  }, [ ]);
+  }, [user, isBusiness]);
+
+  //
   const value: bsContextType = {
     name: "hellos",
     isBusiness,
     businessInfo,
   };
+  // 
+
   return (
     <createBsContext.Provider value={value}>
       {children}
