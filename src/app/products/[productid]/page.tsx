@@ -1,12 +1,12 @@
 import React from "react";
 
-function page({ productid }: { productid: string }) {
+function Page({ params }: { params: { productid: string } }) {
   return (
     <div className="text-2xl text-center">
-      productid @{`${productid}`}
+      productid @{`${params.productid}`}
       Coming soon ......
     </div>
   );
 }
 
-export default page;
+export default Page;
