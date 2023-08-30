@@ -55,8 +55,6 @@ function BusinessContext({ children }: { children?: React.ReactNode }) {
       }
     }
     else {
-        setIsBusiness(true);
-
       setBusinessInfo(null);
     }
   };

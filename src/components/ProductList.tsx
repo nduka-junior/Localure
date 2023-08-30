@@ -21,11 +21,11 @@ import { Button } from "./ui/button";
 import { QrCode } from "lucide-react";
 import QrCodeModal from "./QrCodeModal";
 import QRCode from "qrcode";
-import { authContextType, useAuth } from "./context/AuthContext";
+
 
 function ProductList() {
   const { productList } = useProfileContext() as ProfileContextType;
-  const { user } = useAuth() as authContextType;
+
 
   //
   if (productList === null) return <ProductListSkeleton />;
@@ -118,7 +118,7 @@ function ProductList() {
                         </h1>
                         <div className="absolute bottom-0 right-0 mr-5">
                           <QrCodeModal
-                            productId={` https://localure.vercel.app/products/${user?.uid}/${product.id}`}
+                            productId={` https://localure.vercel.app/products/${product.id}`}
                           />
                         </div>
                       </div>
