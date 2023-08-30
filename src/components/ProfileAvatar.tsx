@@ -37,8 +37,8 @@ function ProfileAvatar() {
       <section className="w-full">
         <h1 className="text-2xl font-medium ">{businessInfo?.BusinessName}</h1>
         <h1>{businessInfo?.category}</h1>
-        <h1 className="text-xs">{businessInfo?.contact}</h1>
-        <h1 className="text-xs">{businessInfo?.location}</h1>
+        <h1 className="text-[13px]">{businessInfo?.contact}</h1>
+        <h1 className="text-[13px]">{businessInfo?.location}</h1>
       </section>
     </div>
   );

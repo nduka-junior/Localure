@@ -22,7 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, setDoc, doc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { useAuth, authContextType } from "./context/AuthContext";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
@@ -52,7 +52,7 @@ function ProductModal() {
   const [noFiles, setNoFiles] = useState(0);
   const [uploading, setUploading] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const { user, loading } = useAuth() as authContextType  ;
+  const { user, loading } = useAuth() as authContextType;
   const { toast } = useToast();
   const router = useRouter();
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
@@ -69,6 +69,9 @@ function ProductModal() {
       description: "",
     },
   });
+
+ 
+
   // handle image upload
   const handleImageUpload = async (imageFile: File) => {
     //  storage ref
@@ -101,6 +104,7 @@ function ProductModal() {
     return downloadURL;
   };
 
+
   // submit form
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
@@ -119,10 +123,10 @@ function ProductModal() {
       }
 
       try {
-        const collectRef = collection(db, `${user?.uid}`);
-        const docRef = await addDoc(collectRef, {
+        const docRef = doc(collection(db, `${user?.uid}`));
+        await setDoc(docRef, {
           date: new Date().toISOString(),
-          id: collectRef.id,
+          id: docRef.id,
           uid: user?.uid,
           ...values,
           url,
@@ -160,132 +164,131 @@ function ProductModal() {
         <Button variant="outline">Add Product</Button>
       </DialogTrigger>
 
-        <DialogContent className="h-[90vh] overflow-y-scroll max-sm:w-[90vw] ">
-          <DialogHeader>
-            <DialogTitle className="text-center text-2xl  ">
-              Product Details
-            </DialogTitle>
-            <DialogDescription>
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-8 mt-2 max-sm:text-left   "
-                >
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Product Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Mocktails" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          Enter the name of your product. This is how your
-                          product will be displayed to customers.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="price"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Price</FormLabel>
-                        <FormControl>
-                          <Input type="number" placeholder="$20" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          Specify the price of your product. Customers will see
-                          this when considering a purchase.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="categories"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Product Category</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Mocktails" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          Choose a category for your product. This helps
-                          customers find your product more easily.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Product Description</FormLabel>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Tell us a little bit about yourself"
-                            className="resize-none"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          Choose a category for your product. This helps
-                          customers find your product more easily.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormItem>
-                    <FormLabel>Select Images</FormLabel>
-                    <FormControl className=" file:cursor-pointer ">
-                      <Input
-                        type="file"
-                        className="file:border-2 file:rounded-lg py-2 h-auto file:px-2  w-full"
-                        multiple
-                        onChange={handleChange}
-                        value={inputValue}
-                        accept="image/jpeg,image/jpg,image/png,image/webp"
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      <>
-                        Upload images of your product. This is how customers
-                        will be able to see your product.
-                        {percent && (
-                          <div>
-                            <h5 className="text-sm">
-                              Uploading photos {noFiles} / {files?.length}
-                            </h5>
-                            <div className="flex items-center justify-center">
-                              <h1 className="mr-2 text-sm">
-                                {Math.floor(percent)}%
-                              </h1>
-                              <Progress value={percent} className="mt-3" />
-                            </div>
+      <DialogContent className="h-[90vh] overflow-y-scroll max-sm:w-[90vw] ">
+        <DialogHeader>
+          <DialogTitle className="text-center text-2xl  ">
+            Product Details
+          </DialogTitle>
+          <DialogDescription>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-8 mt-2 max-sm:text-left   "
+              >
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Product Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Mocktails" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        Enter the name of your product. This is how your product
+                        will be displayed to customers.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Price</FormLabel>
+                      <FormControl>
+                        <Input type="number" placeholder="$20" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        Specify the price of your product. Customers will see
+                        this when considering a purchase.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="categories"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Product Category</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Mocktails" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        Choose a category for your product. This helps customers
+                        find your product more easily.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Product Description</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="Tell us a little bit about yourself"
+                          className="resize-none"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Choose a category for your product. This helps customers
+                        find your product more easily.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormItem>
+                  <FormLabel>Select Images</FormLabel>
+                  <FormControl className=" file:cursor-pointer ">
+                    <Input
+                      type="file"
+                      className="file:border-2 file:rounded-lg py-2 h-auto file:px-2  w-full"
+                      multiple
+                      onChange={handleChange}
+                      value={inputValue}
+                      accept="image/jpeg,image/jpg,image/png,image/webp"
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    <>
+                      Upload images of your product. This is how customers will
+                      be able to see your product.
+                      {percent && (
+                        <div>
+                          <h5 className="text-sm">
+                            Uploading photos {noFiles} / {files?.length}
+                          </h5>
+                          <div className="flex items-center justify-center">
+                            <h1 className="mr-2 text-sm">
+                              {Math.floor(percent)}%
+                            </h1>
+                            <Progress value={percent} className="mt-3" />
                           </div>
-                        )}
-                      </>
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
+                        </div>
+                      )}
+                    </>
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
 
-                  <Button type="submit" disabled={uploading} className="w-full">
-                    Submit
-                  </Button>
-                </form>
-              </Form>
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-   
+                <Button type="submit" disabled={uploading} className="w-full">
+                  Submit
+                </Button>
+              </form>
+            </Form>
+          </DialogDescription>
+        </DialogHeader>
+      </DialogContent>
     </Dialog>
   );
 }
