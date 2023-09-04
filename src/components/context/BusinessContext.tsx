@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { createContext, useContext } from "react";
 import { db } from "@/lib/firebase";
 import { useAuth, authContextType } from "@/components/context/AuthContext";
@@ -10,6 +10,7 @@ export interface bsContextType {
   name: string | null;
   isBusiness: boolean;
   businessInfo: BusinessInfoType | null;
+  loading: boolean;
 }
 export interface BusinessInfoType {
   BusinessName: string;
@@ -18,24 +19,27 @@ export interface BusinessInfoType {
   date: Date;
   location: string;
   uid: string;
-  photoUrl : string
+  photoUrl: string;
 }
 export const createBsContext = createContext<bsContextType | null>({
   name: null,
   isBusiness: false,
   businessInfo: null,
+  loading: true
 });
 
 function BusinessContext({ children }: { children?: React.ReactNode }) {
   const [isBusiness, setIsBusiness] = React.useState<boolean>(false);
   const [businessInfo, setBusinessInfo] =
     React.useState<BusinessInfoType | null>(null);
+  const [loading,setLoading] = useState<boolean>(true)
   const { user } = useAuth() as authContextType;
   const router = useRouter();
   console.log(user);
 
   //
   const checkBusinessInfo = async () => {
+    setLoading(true)
     if (user) {
       const businessRef = collection(db, "businessDetails");
       const q = query(businessRef, where("uid", "==", user?.uid));
@@ -49,15 +53,16 @@ function BusinessContext({ children }: { children?: React.ReactNode }) {
         console.log("Document data:", data);
       });
       if (querySnapshot.docs.length == 0) {
-        return setIsBusiness(false );
+        return setIsBusiness(false);
       } else {
         setIsBusiness(true);
         return router.push("/profile");
       }
-    }
-    else {
+    } else {
       setBusinessInfo(null);
+      setIsBusiness(true);
     }
+    setLoading(false)
   };
   //
 
@@ -70,8 +75,9 @@ function BusinessContext({ children }: { children?: React.ReactNode }) {
     name: "hellos",
     isBusiness,
     businessInfo,
+    loading
   };
-  // 
+  //
 
   return (
     <createBsContext.Provider value={value}>

@@ -8,6 +8,9 @@ import { User } from "firebase/auth";
 import { useRouter } from "next/navigation";
 
 
+if (process.env.NODE_ENV === "production") {
+  console.log = function () {};
+}
 
 export interface authContextType {
   user: User | null | undefined;
