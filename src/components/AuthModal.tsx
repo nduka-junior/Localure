@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -12,27 +12,35 @@ import { Button } from "@/components/ui/button";
 import { useAuth, authContextType } from "./context/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
-
+import BusinessSearch from "@/components/BusinessSearch";
 function AuthModal() {
   const { signInWithGoogle, user, logoutFromGoogle, loading } =
     useAuth() as authContextType;
-  console.log(user?.photoURL);
+  const [hideSearch, setHideSearch] = useState<boolean>(true)
+
   if (loading) return <div>Loading...</div>;
   return (
     <>
       {user ? (
         <div className="flex items-center gap-4">
-          <Button variant="link">
-            <Link href="/profile" className="text-lg">Profile</Link>
-          </Button>
-
-          <Avatar>
-            <AvatarImage src={user?.photoURL ?? undefined} />
-            <AvatarFallback>
-              {user?.displayName?.slice(0, 2).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <Button onClick={() => logoutFromGoogle()}>Logout</Button>
+          <BusinessSearch
+            hideSearch={hideSearch}
+            setHideSearch={setHideSearch}
+          />
+          {hideSearch ? null : (
+            <>
+              <Link href="/profile" className="text-lg hover:text-[#0000008e] ">
+                Profile
+              </Link>
+              <Avatar>
+                <AvatarImage src={user?.photoURL ?? undefined} />
+                <AvatarFallback>
+                  {user?.displayName?.slice(0, 2).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <Button onClick={() => logoutFromGoogle()}>Logout</Button>
+            </>
+          )}
         </div>
       ) : (
         <div>

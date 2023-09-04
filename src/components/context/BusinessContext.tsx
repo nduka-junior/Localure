@@ -11,13 +11,14 @@ export interface bsContextType {
   isBusiness: boolean;
   businessInfo: BusinessInfoType | null;
 }
-interface BusinessInfoType {
+export interface BusinessInfoType {
   BusinessName: string;
   category: string;
   contact: string;
   date: Date;
   location: string;
   uid: string;
+  photoUrl : string
 }
 export const createBsContext = createContext<bsContextType | null>({
   name: null,

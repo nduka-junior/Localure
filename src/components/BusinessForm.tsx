@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,25 +12,19 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { collection, addDoc } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAuth, authContextType } from "@/components/context/AuthContext";
 import { db } from "@/lib/firebase";
 import { useToast } from "@/components/ui/use-toast";
-import { useBs } from "./context/BusinessContext";
+import { storage } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-
+import { updateProfile } from "firebase/auth";
 import { cn } from "@/lib/utils";
+import { auth } from "@/lib/firebase";
 
 import {
   Command,
@@ -62,8 +56,8 @@ const formSchema = z.object({
 });
 const BusinessForm = () => {
   const { user, loading, error } = useAuth() as authContextType;
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [file, setFile] = useState<FileList | null>();
+  const [inputValue, setInputValue] = useState("");
   const { toast } = useToast();
   const router = useRouter();
   // 1. Define your form.
@@ -75,21 +69,72 @@ const BusinessForm = () => {
       contact: "+123456789",
     },
   });
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    setFile(event?.target?.files);
+    setInputValue(event.target.value);
+  }
+  // handle image upload
+  const handleImageUpload = async (imageFile: File) => {
+    if (!file) return user?.photoURL;
 
+    //  storage ref
+    const storageRef = ref(storage, `images/${imageFile.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+    //  upload task events
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const percent = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+
+        // update progress
+        // setPercent(percent + 0.002);
+        console.log(percent);
+      },
+      (error) => {
+        //  toast.error(error.message);
+        console.log(error);
+      }
+    );
+
+    await uploadTask;
+
+    let downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+    // 👆 getDownloadURL returns a promise too, so...
+    console.log(downloadURL);
+    // setPercent(null);
+    return downloadURL;
+  };
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const docRef = await addDoc(collection(db, "businessDetails"), {
-      ...values,
-      uid: user?.uid,
-      date: new Date(),
-    });
-    console.log("Document written with ID: ", docRef.id);
-    console.log(values);
-    toast({
-      title: "Account created.",
-    });
-    return router.push("/profile");
+    if (file) {
+      const url = await handleImageUpload(file[0]);
+      const docRef = await addDoc(collection(db, "businessDetails"), {
+        ...values,
+        uid: user?.uid,
+        date: new Date(),
+        photoUrl: url,
+      });
+      // Update the photoURL for the currently signed-in user
+      updateProfile(auth.currentUser!, { photoURL: url })
+        .then(() => {
+          // Profile updated successfully
+          console.log("PhotoURL updated successfully!");
+        })
+        .catch((error) => {
+          // An error occurred
+          console.error("Error updating PhotoURL:", error);
+        });
+      console.log("Document written with ID: ", docRef.id);
+      console.log(values);
+      toast({
+        title: "Account created.",
+      });
+      return router.push("/profile");
+    }
   }
+
   const categories: { value: string; label: string }[] = [
     "Advertising Agencies",
     "Aerospace & Defense",
@@ -270,7 +315,6 @@ const BusinessForm = () => {
     label: category,
   }));
 
-
   return (
     <div className="container md:max-w-[60vw]">
       <h1 className="text-2xl text-center font-semibold">Business Details</h1>
@@ -300,6 +344,20 @@ const BusinessForm = () => {
               </FormItem>
             )}
           />
+          <FormItem>
+            <FormLabel>Select Images</FormLabel>
+            <FormControl className=" file:cursor-pointer ">
+              <Input
+                type="file"
+                className="file:border-2 file:rounded-lg py-2 h-auto file:px-2  w-full"
+                onChange={handleChange}
+                value={inputValue}
+                accept="image/jpeg,image/jpg,image/png,image/webp"
+              />
+            </FormControl>
+
+            <FormMessage />
+          </FormItem>
 
           <FormField
             control={form.control}

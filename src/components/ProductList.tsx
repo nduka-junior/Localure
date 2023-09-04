@@ -39,7 +39,7 @@ function ProductList() {
   return (
     <>
       <div className="text-center">
-        <h1>Add a product</h1>
+
         <ProductModal />
       </div>
       <div className="grid  grid-cols-3 xl:grid-cols-4  max-sm:grid-cols-2 mt-4   gap-1">

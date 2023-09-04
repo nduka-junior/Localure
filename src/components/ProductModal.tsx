@@ -30,7 +30,7 @@ import { Progress } from "@/components/ui/progress";
 import { storage } from "@/lib/firebase";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-
+import { PlusCircle } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -70,8 +70,6 @@ function ProductModal() {
     },
   });
 
- 
-
   // handle image upload
   const handleImageUpload = async (imageFile: File) => {
     //  storage ref
@@ -103,7 +101,6 @@ function ProductModal() {
     setPercent(null);
     return downloadURL;
   };
-
 
   // submit form
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -161,7 +158,12 @@ function ProductModal() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant="outline">Add Product</Button>
+        <PlusCircle
+          strokeWidth={1.5}
+          size="56px"
+          color="#121212"
+          className="hover:stroke-[#5a5959] transition-all duration-400 ease-out"
+        />
       </DialogTrigger>
 
       <DialogContent className="h-[90vh] overflow-y-scroll max-sm:w-[90vw] ">

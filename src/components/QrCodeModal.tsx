@@ -1,4 +1,6 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { ArrowDownToLine } from "lucide-react";
+
 import {
   Dialog,
   DialogContent,
@@ -51,10 +53,10 @@ function QrCodeModal({ productId }: QrCodeModalProps) {
             className="rounded"
           />
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="max-sm:w-[80vw]">
           <DialogHeader>
             {/* <DialogTitle>Are you sure absolutely sure?</DialogTitle> */}
-            <DialogDescription className="flex items-center">
+            <DialogDescription className="flex items-center max-sm:flex-col">
               {/* /products/${productId} */}
               <Image
                 src={qrCodeUrl}
@@ -67,7 +69,9 @@ function QrCodeModal({ productId }: QrCodeModalProps) {
 
               <div>
                 <a href={qrCodeUrl} download>
-                  <Button variant="outline">Save QRCode</Button>
+                  <Button variant="outline">
+                    Save QRCode <ArrowDownToLine className="ml-2 " />
+                  </Button>
                 </a>
               </div>
             </DialogDescription>
