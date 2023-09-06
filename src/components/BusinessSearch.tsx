@@ -14,7 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import Image from "next/image"
+import Image from "next/image";
 function BusinessSearch({
   hideSearch,
   setHideSearch,
@@ -109,17 +109,14 @@ function BusinessSearch({
                             <div>
                               <Image
                                 src={item.photoUrl}
-                                className="rounded"
+                                className="rounded-full w-[50px] h-[50px]"
                                 width={50}
                                 height={50}
                                 alt="avatar"
                               />
                             </div>
                             <div>
-                              <div className="text-xl">
-
-                                {item.BusinessName}
-                              </div>
+                              <div className="text-xl">{item.BusinessName}</div>
                               <div className="text-sm"> {item.category}</div>
                             </div>
                           </div>

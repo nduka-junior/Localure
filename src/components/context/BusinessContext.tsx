@@ -53,6 +53,8 @@ function BusinessContext({ children }: { children?: React.ReactNode }) {
         console.log("Document data:", data);
       });
       if (querySnapshot.docs.length == 0) {
+    setLoading(false);
+
         return setIsBusiness(false);
       } else {
         setIsBusiness(true);

@@ -12,7 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -110,7 +110,8 @@ const BusinessForm = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (file) {
       const url = await handleImageUpload(file[0]);
-      const docRef = await addDoc(collection(db, "businessDetails"), {
+      const docRef = doc(collection(db, "businessDetails"), user?.uid);
+      await setDoc(docRef, {
         ...values,
         uid: user?.uid,
         date: new Date(),
