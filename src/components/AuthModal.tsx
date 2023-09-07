@@ -13,10 +13,12 @@ import { useAuth, authContextType } from "./context/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import BusinessSearch from "@/components/BusinessSearch";
+import { bsContextType, useBs } from "./context/BusinessContext";
 function AuthModal() {
   const { signInWithGoogle, user, logoutFromGoogle, loading } =
     useAuth() as authContextType;
   const [hideSearch, setHideSearch] = useState<boolean>(true)
+  const { businessInfo } = useBs() as bsContextType;
 
   if (loading) return <div>Loading...</div>;
   return (
@@ -33,7 +35,7 @@ function AuthModal() {
                 Profile
               </Link>
               <Avatar>
-                <AvatarImage src={user?.photoURL ?? undefined} />
+                <AvatarImage src={businessInfo?.photoUrl ?? undefined} />
                 <AvatarFallback>
                   {user?.displayName?.slice(0, 2).toUpperCase()}
                 </AvatarFallback>

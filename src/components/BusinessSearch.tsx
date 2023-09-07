@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Image from "next/image";
+import Link from "next/link";
 function BusinessSearch({
   hideSearch,
   setHideSearch,
@@ -23,6 +24,7 @@ function BusinessSearch({
   setHideSearch: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [search, setSearch] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<BusinessInfoType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const getSearch = async (value: string) => {
@@ -76,7 +78,7 @@ function BusinessSearch({
   return (
     <div>
       <>
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button variant="outline">
               <Search size="23px" className=" cursor-pointer " />
@@ -100,18 +102,25 @@ function BusinessSearch({
             </DialogHeader>
             <div className="grid gap-4 py-4">
               {searchResults && !loading ? (
-                searchResults.map((item, index) => {
+                searchResults.map((item, index:number) => {
                   return (
-                    <div key={index} className=" ">
-                      <div>
+                    <Link
+                      key={index}
+                      href={`/profile/${item.id}`}
+                      onClick={() => {
+                        // setSearch("");
+                        setOpen(false);
+                      }}
+                    >
+                      <div className=" ">
                         {
                           <div className="leading-[1px] flex items-center gap-2">
                             <div>
                               <Image
                                 src={item.photoUrl}
-                                className="rounded-full w-[50px] h-[50px]"
-                                width={50}
-                                height={50}
+                                className="rounded-full w-[40px] h-[40px]"
+                                width={40}
+                                height={40}
                                 alt="avatar"
                               />
                             </div>
@@ -122,7 +131,7 @@ function BusinessSearch({
                           </div>
                         }
                       </div>
-                    </div>
+                    </Link>
                   );
                 })
               ) : (

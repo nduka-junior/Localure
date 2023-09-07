@@ -116,6 +116,7 @@ const BusinessForm = () => {
         uid: user?.uid,
         date: new Date(),
         photoUrl: url,
+        id: docRef.id
       });
       // Update the photoURL for the currently signed-in user
       updateProfile(auth.currentUser!, { photoURL: url })

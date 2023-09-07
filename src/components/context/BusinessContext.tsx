@@ -20,6 +20,7 @@ export interface BusinessInfoType {
   location: string;
   uid: string;
   photoUrl: string;
+  id : string
 }
 export const createBsContext = createContext<bsContextType | null>({
   name: null,
@@ -58,7 +59,7 @@ function BusinessContext({ children }: { children?: React.ReactNode }) {
         return setIsBusiness(false);
       } else {
         setIsBusiness(true);
-        return router.push("/profile");
+
       }
     } else {
       setBusinessInfo(null);

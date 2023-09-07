@@ -5,7 +5,7 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useAuthState, AuthStateHook } from "react-firebase-hooks/auth";
 import { useToast } from "@/components/ui/use-toast";
 import { User } from "firebase/auth";
-import { useRouter } from "next/navigation";
+
 
 
 if (process.env.NODE_ENV === "production") {
@@ -32,7 +32,7 @@ export const createAuthContext = createContext<authContextType | null>({
 function AuthContext({ children }: { children: ReactNode }) {
   const [user, loading, error]: AuthStateHook = useAuthState(auth);
   const { toast } = useToast();
-  const router = useRouter();
+
   // PROVIDER
   const googleProvider = new GoogleAuthProvider();
   // SIGN IN WITH GOOGLE

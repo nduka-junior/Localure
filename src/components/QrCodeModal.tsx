@@ -68,7 +68,7 @@ function QrCodeModal({ productId }: QrCodeModalProps) {
               />
 
               <div>
-                <a href={qrCodeUrl} download>
+                <a href={qrCodeUrl} download={`${productId}_qrcode`}>
                   <Button variant="outline">
                     Save QRCode <ArrowDownToLine className="ml-2 " />
                   </Button>

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import {
-  useProfileContext,
   ProductType,
   ProfileContextType,
-} from "./context/ProfileContext";
+} from "@/components/context/ProfileContext";
 import Image from "next/image";
 import {
   Dialog,
@@ -22,26 +21,26 @@ import { QrCode } from "lucide-react";
 import QrCodeModal from "./QrCodeModal";
 import QRCode from "qrcode";
 
+interface ProductListProps {
+  productList: ProductType[] | null;
+  message?: string;
+  children? :ReactNode
+}
 
-function ProductList() {
-  const { productList } = useProfileContext() as ProfileContextType;
-
-
+function ProductList({ productList, message,children }: ProductListProps) {
+  console.log(productList)
   //
   if (productList === null) return <ProductListSkeleton />;
   if (productList?.length === 0)
     return (
       <div className="text-xl text-center mt-5">
-        You have not added any product
+        {message ? message : "You have not added any product"}
       </div>
     );
 
   return (
     <>
-      <div className="text-center">
-
-        <ProductModal />
-      </div>
+    {children}
       <div className="grid  grid-cols-3 xl:grid-cols-4  max-sm:grid-cols-2 mt-4   gap-1">
         {productList?.map((product: ProductType, index: number) => {
           return (

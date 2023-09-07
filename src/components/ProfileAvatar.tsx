@@ -2,15 +2,23 @@ import React from "react";
 import { authContextType, useAuth } from "./context/AuthContext";
 import { useProfileContext } from "./context/ProfileContext";
 import Image from "next/image";
-import { useBs, bsContextType } from "./context/BusinessContext";
+import {
+  useBs,
+  bsContextType,
+  BusinessInfoType,
+} from "./context/BusinessContext";
 import ProfileAvatarSkeleton from "@/components/ProfileAvatarSkeleton";
-function ProfileAvatar() {
-  const { user, loading } = useAuth() as authContextType;
-  const { businessInfo } = useBs() as bsContextType;
-  console.log(user);
+
+interface PageProps {
+  businessInfo: BusinessInfoType;
+}
+
+function ProfileAvatar({ businessInfo }: PageProps) {
+  const {  loading } = useAuth() as authContextType;
+
 
   //
-  if (loading || (businessInfo == null ) ) return <ProfileAvatarSkeleton />;
+  if (loading || businessInfo == null) return <ProfileAvatarSkeleton />;
   //
 
   return (
@@ -20,19 +28,21 @@ function ProfileAvatar() {
     items-start  justify-center mt-5 mb-10 gap-4 "
       >
         <div className="relative  mr-2  ">
-          <Image
-            src={user?.photoURL ?? ""}
-            alt="Profile pic"
-            width={100}
-            height={100}
-            className="rounded-full w-[100%] h-[100%] max-h-[200px] max-w-[200px]  "
-            style={{
-              minHeight: "100px",
-              minWidth: "100px",
-              maxHeight: "150px",
-              maxWidth: "150px",
-            }}
-          />
+          {businessInfo?.photoUrl && (
+            <Image
+              src={businessInfo?.photoUrl}
+              alt="Profile pic"
+              width={100}
+              height={100}
+              className="rounded-full w-[100%] h-[100%] max-h-[200px] max-w-[200px]  "
+              style={{
+                minHeight: "100px",
+                minWidth: "100px",
+                maxHeight: "150px",
+                maxWidth: "150px",
+              }}
+            />
+          )}
         </div>
 
         <section className="w-full">
