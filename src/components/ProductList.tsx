@@ -24,11 +24,11 @@ import QRCode from "qrcode";
 interface ProductListProps {
   productList: ProductType[] | null;
   message?: string;
-  children? :ReactNode
+  children?: ReactNode;
 }
 
-function ProductList({ productList, message,children }: ProductListProps) {
-  console.log(productList)
+function ProductList({ productList, message, children }: ProductListProps) {
+  console.log(productList);
   //
   if (productList === null) return <ProductListSkeleton />;
   if (productList?.length === 0)
@@ -40,14 +40,14 @@ function ProductList({ productList, message,children }: ProductListProps) {
 
   return (
     <>
-    {children}
+      {children}
       <div className="grid  grid-cols-3 xl:grid-cols-4  max-sm:grid-cols-2 mt-4   gap-1">
         {productList?.map((product: ProductType, index: number) => {
           return (
             <Dialog key={index}>
               <DialogTrigger>
                 <div
-                  className="relative cursor-pointer w-full h-full  "
+                  className="relative hover:scale-[1.04] transition duration-300 ease-in-out  cursor-pointer w-full h-full hover:shadow-[0_3px_10px_rgb(0,0,0,0.5)] "
                   key={product.id}
                 >
                   <Image
@@ -55,7 +55,7 @@ function ProductList({ productList, message,children }: ProductListProps) {
                     alt={product.name}
                     width={200}
                     height={200}
-                    className="h-[250px] w-full object-cover object-center   max-h-[250px] hover:bg-[black]  transition duration-200 ease-in-out relative z-10 "
+                    className="h-[200px] w-full object-cover    max-h-[200px] hover:bg-[black]  transition duration-200 ease-in-out relative z-10 "
                   />
                   <div className="absolute h-full w-full z-20  hover:bg-[#0000003f]  transition duration-200 ease-out top-0 "></div>
                 </div>
