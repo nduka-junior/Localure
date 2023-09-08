@@ -41,7 +41,7 @@ function ProductList({ productList, message, children }: ProductListProps) {
   return (
     <>
       {children}
-      <div className="grid  grid-cols-3 xl:grid-cols-4  max-sm:grid-cols-2 mt-4   gap-1">
+      <div className="grid  grid-cols-3 md:grid-cols-4   max-sm:grid-cols-3  mt-4  gap-1  ">
         {productList?.map((product: ProductType, index: number) => {
           return (
             <Dialog key={index}>
@@ -55,7 +55,7 @@ function ProductList({ productList, message, children }: ProductListProps) {
                     alt={product.name}
                     width={200}
                     height={200}
-                    className="h-[200px] w-full object-cover    max-h-[200px] hover:bg-[black]  transition duration-200 ease-in-out relative z-10 "
+                    className=" h-[200px]  w-full max-h-[200px] max-sm:h-[150px] max-sm:w-[150px] object-cover    max-sm:max-h-[150px] hover:bg-[black]  transition duration-200 ease-in-out relative z-10 "
                   />
                   <div className="absolute h-full w-full z-20  hover:bg-[#0000003f]  transition duration-200 ease-out top-0 "></div>
                 </div>
