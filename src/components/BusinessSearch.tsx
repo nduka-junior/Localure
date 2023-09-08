@@ -80,9 +80,10 @@ function BusinessSearch({
       <>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline">
-              <Search size="23px" className=" cursor-pointer " />
-            </Button>
+            <Search
+              size="23px"
+              className=" hover:opacity-60 cursor-pointer max-sm:w-[18px] "
+            />
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -102,7 +103,7 @@ function BusinessSearch({
             </DialogHeader>
             <div className="grid gap-4 py-4">
               {searchResults && !loading ? (
-                searchResults.map((item, index:number) => {
+                searchResults.map((item, index: number) => {
                   return (
                     <Link
                       key={index}

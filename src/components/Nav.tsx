@@ -8,7 +8,9 @@ function Nav() {
       <Link href="/">
         <h1 className="text-2xl">LocaLure</h1>
       </Link>
-      <AuthModal />
+
+        <AuthModal />
+
     </div>
   );
 }
